@@ -74,8 +74,10 @@ def slalom(startSideDir=RIGHT,startDir=FORWARD,turns=4, interval=0.1): #does a s
     i = 0
     #need to determine which way we should be going with the direction
     if startDir == FORWARD:
+	print "Going to move forwards in the slalom"
         forwards_on()
     else:
+	print "Going to move backwards in the slalom"
         backwards_on()
     #now do the turns
     while i < turns:
@@ -100,41 +102,39 @@ def all_off(): #turns all of the pins off - always call at the end to save batte
     GPIO.output(LEFT,0)
     GPIO.output(RIGHT,0)
 
-print "About to call some functions"
+def cleanup(): #cleans up the GPIO pins
+    GPIO.cleanup()
 
-forwards_on()
-time.sleep(0.3)
-slalom(RIGHT,FORWARD,5,0.2)
-time.sleep(0.4)
-backwards_on()
-time.sleep(0.7)
-#forwards_on()
-#time.sleep(0.5)
-#right_on()
-#time.sleep(0.5)
-#right_off()
-#time.sleep(0.5)
-#left_on()
-#time.sleep(0.5)
-#left_off()
-#time.sleep(0.5)
-#forwards_off()
-#time.sleep(0.5)
-#backwards_on()
-#time.sleep(1)
-all_off()
-#while True:
-#    print "Just about to set output to 0"
-#    forwards_off()
-#    #outputOff = GPIO.output(11, 0)
-#    print "Just set output to 0 about to sleep for 1 second"
- #   time.sleep(1)
- #   print "Just slept after setting output to 1"
-#    forwards_on()
-#    #outputOn = GPIO.output(11, 1)
-#    print "Just set output to 1 just about to sleep for another 1 second"
-#    time.sleep(1)
+#try:
+def main():
+    try:
+        forwards_on()
+        time.sleep(0.3)
+        slalom(RIGHT,FORWARD,20,0.4)
+        #time.sleep(0.4)
+        backwards_on()
+        time.sleep(0.7)
+        forwards_on()
+        time.sleep(0.5)
+        right_on()
+        time.sleep(0.5)
+        right_off()
+        time.sleep(0.5)
+        left_on()
+        time.sleep(0.5)
+        left_off()
+        #time.sleep(0.5)
+        #forwards_off()
+        #time.sleep(0.5)
+        #backwards_on()
+        #time.sleep(1)
+        all_off()
+        cleanup()
+    except KeyboardInterrupt:
+        cleanup()
 
+if __name__ == "__main__":
+    main()
 
 
-    
+   
