@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-""" Must be run as root - sudo python PinTest_11.py """
+""" Must be run as root - sudo python PicarsFunctions.py """
 
 import time, RPi.GPIO as GPIO 
 
@@ -85,7 +85,11 @@ def slalom(startSideDir=RIGHT,startDir=FORWARD,turns=4, interval=0.1): #does a s
         choose_dir(startSideDir)
         print "Left direction", LEFT
         print "Right direction", RIGHT
-        time.sleep(interval)
+        if i == 0:
+            #the first turn should only be half the amount
+            time.sleep(interval/2)
+        else:
+            time.sleep(interval)
         #toggle direction for next time
         if startSideDir == RIGHT:
             startSideDir = LEFT
@@ -105,24 +109,30 @@ def all_off(): #turns all of the pins off - always call at the end to save batte
 def cleanup(): #cleans up the GPIO pins
     GPIO.cleanup()
 
+def sleep(sleepTime=1):
+    time.sleep(1)
+
 #try:
 def main():
     try:
         forwards_on()
-        time.sleep(0.3)
-        slalom(RIGHT,FORWARD,20,0.4)
-        #time.sleep(0.4)
-        backwards_on()
-        time.sleep(0.7)
-        forwards_on()
-        time.sleep(0.5)
+        sleep(0.6)
         right_on()
-        time.sleep(0.5)
-        right_off()
-        time.sleep(0.5)
-        left_on()
-        time.sleep(0.5)
-        left_off()
+        sleep(1)
+        all_off()
+        #slalom(LEFT,FORWARD,4,0.5)
+        #time.sleep(0.4)
+        #backwards_on()
+        #time.sleep(1)
+        #forwards_on()
+        #time.sleep(1)
+        #right_on()
+        #time.sleep(0.5)
+        #right_off()
+        #time.sleep(0.5)
+        #left_on()
+        #time.sleep(0.5)
+        #left_off()
         #time.sleep(0.5)
         #forwards_off()
         #time.sleep(0.5)
