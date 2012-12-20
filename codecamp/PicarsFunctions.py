@@ -116,11 +116,11 @@ def sleep(sleepTime=1):
 def main():
     try:
         forwards_on()
-        sleep(0.6)
-        right_on()
+#        sleep(0.6)
+#        right_on()
         sleep(1)
-        all_off()
-        #slalom(LEFT,FORWARD,4,0.5)
+        #all_off()
+        slalom(LEFT,FORWARD,10,0.5)
         #time.sleep(0.4)
         #backwards_on()
         #time.sleep(1)
