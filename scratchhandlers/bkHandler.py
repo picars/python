@@ -65,6 +65,7 @@ def create_socket(host, port):
 def cleanup_threads(thread):
 	print 'About to stop thread'
 	thread.stop()
+	GPIO.cleanup()
 #	print 'About to join thread'
 #	thread.join()
 	print 'Finished cleanup'
