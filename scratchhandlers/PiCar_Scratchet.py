@@ -13,6 +13,7 @@ import sys
 import struct
 from array import *
 import RPi.GPIO as GPIO
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7,GPIO.OUT)
 GPIO.setup(11,GPIO.OUT)
@@ -43,22 +44,23 @@ SCRATCH_SENSOR_NAME_OUTPUT = (
 GPIO_PINS = array('i',[7,11,12,13,15])
 GPIO_PIN_OUTPUT = array('i')
 GPIO_PIN_INPUT = array('i')
-print "Output Pins are:"
-for i in range(0,len(SCRATCH_SENSOR_NAME_OUTPUT)):
-	print GPIO_PINS[i]
-	GPIO_PIN_OUTPUT.append(GPIO_PINS[i])
+#print "Output Pins are:"
+#for i in range(0,len(SCRATCH_SENSOR_NAME_OUTPUT)):
+#	print GPIO_PINS[i]
+#	GPIO_PIN_OUTPUT.append(GPIO_PINS[i])
 
 
 def create_socket(host, port):
     while True:
         try:
-            print 'Trying'
+            #print 'Trying'
             scratch_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             scratch_sock.connect((host, port))
             break
         except socket.error:
-            print "There was an error connecting to Scratch! It may not have been started yet"
-            print "I am currently looking for Scratch at host: %s, port: %s" % (host, port)
+            print "I am trying to connect to Scratch but cannot - it probably has not been started yet. Double click on the Scratch icon to launch it"
+	    print "If you have started Scratch and this message is still continually appearing then shut this by pressing CTR + C and start again"
+            #print "I am currently looking for Scratch at host: %s, port: %s" % (host, port)
             time.sleep(3)
             #sys.exit(1)
 
@@ -96,7 +98,7 @@ class ScratchListener(threading.Thread):
 			    print 'received something: %s' % dataraw
 #			    time.sleep(0.2)
 		    except socket.timeout:
-			    print 'Socket timeout'
+			    #print 'Socket timeout'
 			    continue
 		    except:
 			    break
@@ -120,15 +122,22 @@ if __name__ == '__main__':
         host = DEFAULT_HOST
 
     # open the socket
+    print '*****************************************************************************'
+    print '*****************************************************************************'
+    print ' '
     print 'Welcome to the Pi-Car Scratchet - helping you connect your Pi-Car to Scratch'
-    print 'Connecting...' ,
+    print 'Visit www.pi-cars.com for more info or email info@pi-cars.com for any questions'
+    print ' '
+    print '*****************************************************************************'
+    print '*****************************************************************************'
+    print 'Attempting to connect...' ,
     the_socket = create_socket(host, PORT)
-    print 'Connected!'
-    
+    print 'Connected to Scratch - Scratchet ready to go - check www.pi-cars.com and visit the Under the Bonnet section to see how to connect to a Pi-Car and program Scratch'
+    print 'Press CTR + C to close the terminal - you can double click the Scratchet logo again to start it up'    
     the_socket.settimeout(SOCKET_TIMEOUT)
     listener = ScratchListener(the_socket)
     listener.start()
-    print 'Starting cleaner'
+    #print 'Starting cleaner'
     try:
 	    while True:
 		    time.sleep(0.5)
