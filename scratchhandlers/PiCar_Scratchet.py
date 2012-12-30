@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-""" Must be run as root - sudo python Blink11.py """
+""" Must be run as root - sudo python PiCar_Scratchet.py """
+""" Script based on original version from Simon Walters http://cymplecy.wordpress.com """
+""" Modified slightly when troubleshooting. Currently only is doing GPIO outputs in order to simplify """
 
 import time, RPi.GPIO as GPIO 
 import socket
@@ -55,8 +57,8 @@ def create_socket(host, port):
             scratch_sock.connect((host, port))
             break
         except socket.error:
-            print "There was an error connecting to Scratch!"
-            print "I couldn't find a Mesh session at host: %s, port: %s" % (host, port)
+            print "There was an error connecting to Scratch! It may not have been started yet"
+            print "I am currently looking for Scratch at host: %s, port: %s" % (host, port)
             time.sleep(3)
             #sys.exit(1)
 
@@ -66,13 +68,7 @@ def cleanup_threads(thread):
 	print 'About to stop thread'
 	thread.stop()
 	GPIO.cleanup()
-#	print 'About to join thread'
-#	thread.join()
 	print 'Finished cleanup'
-#	for thread in threads:
-#		thread.stop()
-#		for thread in threads:
-#			thread.join()
 
 class ScratchListener(threading.Thread):
     def __init__(self, socket):
@@ -124,6 +120,7 @@ if __name__ == '__main__':
         host = DEFAULT_HOST
 
     # open the socket
+    print 'Welcome to the Pi-Car Scratchet - helping you connect your Pi-Car to Scratch'
     print 'Connecting...' ,
     the_socket = create_socket(host, PORT)
     print 'Connected!'
@@ -138,16 +135,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
 	    cleanup_threads(listener)
 	    sys.exit()
-
-
-#    while True:
-#	print "Just about to set output to 0"
-#	LEDon = GPIO.output(11, 0)
-#	print "Just set output to 0 about to sleep for 1"
-#	time.sleep(1)
-#	print "Just slept after setting output to 1"
-#	LEDoff = GPIO.output(11, 1)
-#	print "Just set output to 1 just about to sleep for 1"
-#	time.sleep(1)
 
 
